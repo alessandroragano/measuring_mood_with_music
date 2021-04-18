@@ -1,0 +1,33 @@
+{
+    "csv_train_data": "./data/annotations/train_annotations.csv",
+    "root_train_data": "./data/raw/train",
+    "csv_test_data": "./data/annotations/test_annotations.csv",
+    "root_test_data": "./data/raw/test",
+
+    "sampling_rate": 44100,
+    "win_length": 2048,
+    "hop_length": 512,
+
+    "train_features": "./data/processed/train_features.csv",
+    "test_features": "./data/processed/test_features.csv",
+    "root_model": "./data/model/model.npy",
+    "csv_feature_selection": "./data/processed/selected_features.csv",
+    "csv_best_params": "./data/processed/best_params.csv",
+
+    "feature_list": {
+        "bpm": {},
+        "rms": {},
+        "onset_rate": {},
+        "sp_ce": {},
+        "sp_co": {"nbands": 6},
+        "sp_ro": {},
+        "zcr": {},
+        "mfcc": {"nmfcc": 25},
+        "chroma": {"nchroma": 12},
+        "flux": {},
+        "hfc": {}
+    },
+
+    "update_features": false,
+    "middle": true
+}

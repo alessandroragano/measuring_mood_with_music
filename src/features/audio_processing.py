@@ -6,6 +6,7 @@ from feature_computation import Feature
 import json
 import librosa
 from collections import defaultdict
+import eyed3
 
 # ***************** PATH CONFIGURATION ***************** 
 # Configuration file
@@ -18,7 +19,7 @@ song_id_list = pd.read_csv(csv_file, index_col='song_id').index.values.tolist() 
 root_data = config['root_test_data']
 
 # Feature files
-csv_features = config['csv_test_features']
+csv_features = config['test_features']
 
 # Update features equal to true allows udpating a csv of feature values already computed previously, otherwise an empty dictionary is initialized
 if config['update_features']:
@@ -34,10 +35,12 @@ sr = config['sampling_rate']
 
 # For each filename, use feature.call_function to compute features that are included in config['feature_list'] which should be modified in the config.json file accordingly
 for i, filename in enumerate(sorted(song_id_list)):
-    fullpath = os.path.join(root_data, str(filename) + '.mp3')
+    if str(filename).endswith('.mp3'):
+        fullpath = os.path.join(root_data, str(filename))
+    else:
+        fullpath = os.path.join(root_data, str(filename) + '.mp3')
     waveform, _ = librosa.load(fullpath, mono=True, sr=sr)
-
-    # Take 45s middle of the song in the case of the test songs (Amazon music)
+    # Take 45s middle of the song in the case of the test songs
     if config['middle']:
         duration_secs = 45
         middle = waveform.shape[0]//2
@@ -45,6 +48,9 @@ for i, filename in enumerate(sorted(song_id_list)):
     print ("Processing audio file: {0}".format(filename))
 
     # create feature object
+    if config['tag']:
+        af = eyed3.load(fullpath)
+        filename = af.tag.title
     feature = Feature(filename, waveform, win_length, hop_length, sr, features)
 
     # compute features and store them in the dataframe

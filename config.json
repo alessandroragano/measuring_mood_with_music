@@ -3,6 +3,7 @@
     "root_train_data": "./data/raw/train",
     "csv_test_data": "./data/annotations/test_annotations.csv",
     "root_test_data": "./data/raw/test",
+    "songs_info": "./data/annotations/songs_info.csv",
 
     "sampling_rate": 44100,
     "win_length": 2048,
@@ -10,9 +11,12 @@
 
     "train_features": "./data/processed/train_features.csv",
     "test_features": "./data/processed/test_features.csv",
+    "output": "./data/annotations/chart_songs-svr_predictions.pkl",
     "root_model": "./data/model/model.npy",
     "csv_feature_selection": "./data/processed/selected_features.csv",
     "csv_best_params": "./data/processed/best_params.csv",
+    "model_path": "./model/model.pkl",
+    "scaler_path": "./model/scaler.pkl",
 
     "feature_list": {
         "bpm": {},
@@ -22,12 +26,16 @@
         "sp_co": {"nbands": 6},
         "sp_ro": {},
         "zcr": {},
-        "mfcc": {"nmfcc": 25},
+        "mfcc": {"nmfcc": 24},
         "chroma": {"nchroma": 12},
         "flux": {},
         "hfc": {}
     },
-
+    
+    "predict": false,
     "update_features": false,
-    "middle": true
+    "middle": true,
+    "benchmark": false,
+    "store_pred": false,
+    "tag": false
 }

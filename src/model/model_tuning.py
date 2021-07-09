@@ -12,20 +12,32 @@ from sklearn.model_selection import KFold
 # Model tuning consists of finding the best hyperparameters and the best features
 # N.B: never use the test data in this process to avoid any data leakage
 # We use the entire EMO dataset since it represents the training set
-# The test set are the songs taken from Amazon Music
 
 # Configuration file
 with open('config.json') as config_file:
     config = json.load(config_file)
 
+csv_songs_info = config['songs_info']
+songs_info = pd.read_csv(csv_songs_info)
+
+# Use only development set (useful for benchmarking)
+if config['benchmark']:
+    train_index = songs_info[songs_info['Mediaeval 2013 set'] == 'development']['song_id']
+
 # import audio features
-csv_feature_path  = config['csv_features']
+csv_feature_path  = config['train_features']
 features_df = pd.read_csv(csv_feature_path, index_col='song_id')
+if config['benchmark']:
+    features_df = features_df.loc[train_index]
 X = features_df.to_numpy()
 
 # import ground truth arousal and ground truth valence
-train_data_file = config['csv_data']
+train_data_file = config['csv_train_data']
 df_train = pd.read_csv(train_data_file, index_col='song_id')
+
+if config['benchmark']: 
+    df_train = df_train.loc[train_index]
+
 valence = df_train['mean_valence'].to_numpy()
 
 # Create pipeline
@@ -37,8 +49,8 @@ pipe = Pipeline([
 
 # Create grid search with cross-validation
 param_grid = {
-            'svr__C': [0.1, 1, 100, 1000],
-            'svr__epsilon': [0.0001, 0.0005, 0.001, 0.005, 0.01, 0.05, 0.1, 0.5, 1, 5, 10],
+            'svr__C': [0.1, 1, 5, 10, 100],
+            'svr__epsilon': [0.0001, 0.0005, 0.001, 0.005, 0.01, 0.05, 0.1, 0.3, 0.5, 0.7, 1, 5, 10],
             'svr__gamma': [0.0001, 0.001, 0.005, 0.1, 1, 3, 5]
             }   
 grid = GridSearchCV(pipe, param_grid, cv=5, scoring='r2')

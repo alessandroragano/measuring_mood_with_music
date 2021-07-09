@@ -36,7 +36,7 @@ Due to copyright issues, we have uploaded the features already computed on the t
 however you could recompute the features on the same training set which is not protected by copyright.
 To compute the training set fetures, you can follow these steps:
 1. Create the folder ```data/raw/train```.
-2. Download the dataset https://cvml.unige.ch/databases/emoMusic/ and moving the audio files to ``` data/raw/train ```.
+2. Download the dataset https://cvml.unige.ch/databases/emoMusic/ and move the audio files to ``` data/raw/train ```.
 
 To compute features on your own test set, follow these steps: 
 1. Create the folder ```data/raw/test```.

@@ -18,6 +18,9 @@
     "model_path": "./model/model.pkl",
     "scaler_path": "./model/scaler.pkl",
 
+    "do_file": "./hm_replication/analysis.do",
+    "stata_installation_path": "/Applications/Stata/StataSE.app/Contents/MacOS/StataSE",
+
     "feature_list": {
         "bpm": {},
         "rms": {},
@@ -36,6 +39,6 @@
     "update_features": false,
     "middle": true,
     "benchmark": false,
-    "store_pred": false,
+    "store": false,
     "tag": false
 }

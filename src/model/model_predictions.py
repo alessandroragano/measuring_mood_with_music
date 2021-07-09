@@ -27,8 +27,10 @@ X_test = scaler.transform(X_test)
 model = pickle.load(open(config['model_path'], 'rb'))
 
 predictions = model.predict(X_test)
-if config['store_pred']:
+if config['store']:
     output['valence_md'] = predictions
     output.to_pickle(output)
 else:
     output.to_pickle(config['output'])
+
+print("Valence prediction done")

@@ -28,18 +28,29 @@ To choose the action you need to run:
 ```
 python main.py --action=<n>
 ```
-where n is the action that you want to take. The default action is ``` 6 ``` (regression analysis) which runs the STATA software and produces the correlation plot
-between life satisfaction and the music valence index (MVI)
+where n is the action that you want to execute. The default action is ``` 6 ``` (regression analysis) which runs the STATA software and produces the correlation plot
+between life satisfaction and the music valence index (MVI).
+Even though any action depends on the previous ones, we have provided the results already calculated so that you can run any action independently of each other.
+To run all the steps, you should follow the order above. N.B.: the action ``` 1 ``` cannot be directly executed since the audio files are missing in the repo (see below).
 
 ## Feature computation
-Due to copyright issues, we have uploaded the features already computed on the test set. We have done the same for the training set, 
-however you could recompute the features on the same training set which is not protected by copyright.
+Features cannot be directly computed since the audio files are missing.
+### Training set features
 To compute the training set fetures, you can follow these steps:
 1. Create the folder ```data/raw/train```.
 2. Download the dataset https://cvml.unige.ch/databases/emoMusic/ and move the audio files to ``` data/raw/train ```.
-
-To compute features on your own test set, follow these steps: 
+3. Run this command
+```
+python main.py --action=1
+```
+### Test set features
+The test set features that we have provided in the repo cannot be recomputed since the audio files are protected by copyright. However, you could use your test set. 
+To compute features of your test set, follow these steps: 
 1. Create the folder ```data/raw/test```.
 2. Move the audio files to ```data/raw/test```.
-3. Create the ```data/annotations/test_annotations.csv``` with a column named ```song_id ``` that includes the filenames that you have in your folder. 
+3. Create the csv file ```data/annotations/test_annotations.csv``` with a column named ```song_id ``` that includes the filenames that you have in your folder. 
+4. Run this command
+```
+python main.py --action=1
+```
 

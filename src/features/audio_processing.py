@@ -9,13 +9,12 @@ from collections import defaultdict
 import sys
 
 dataset_mode = sys.argv[1]
-print("DM: {}".format(dataset_mode))
+print("Dataset mode: {}".format(dataset_mode))
 
 # ***************** PATH CONFIGURATION ***************** 
 # Configuration file
 with open('config.json') as config_file:
     config = json.load(config_file)
-print(config['dataset_mode'])
 
 # Import data
 if dataset_mode == 'train':
@@ -48,7 +47,7 @@ for i, filename in enumerate(sorted(song_id_list)):
         fullpath = os.path.join(root_data, str(filename) + '.mp3')
     waveform, _ = librosa.load(fullpath, mono=True, sr=sr)
     
-    # Take 45s middle of the song in the case of the test songs
+    # Take 45s middle of the song for testing
     if config['middle']:
         duration_secs = 45
         middle = waveform.shape[0]//2

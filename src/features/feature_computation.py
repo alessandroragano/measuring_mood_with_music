@@ -111,8 +111,8 @@ class Feature():
         spectral_flux = []
 
         for frame in es.FrameGenerator(self.signal, frameSize=self.win_length, hopSize=self.hop_length):
-            freq_bins = spectrum_calculator(w(frame))
-            flux_n = flux_calculator(freq_bins)
+            frame_spectra = spectrum_calculator(w(frame))
+            flux_n = flux_calculator(frame_spectra)
             spectral_flux.append(flux_n)
         
         self.feature_processing(np.asarray(spectral_flux).reshape(1, -1), 'spflux', fo=False)
@@ -126,8 +126,8 @@ class Feature():
         hfc_calculator = es.HFC()
         hfc = []
         for frame in es.FrameGenerator(self.signal, frameSize=self.win_length, hopSize=self.hop_length):
-            freq_bins = spectrum_calculator(w(frame))
-            hfc_n = hfc_calculator(freq_bins)
+            frame_spectra = spectrum_calculator(w(frame))
+            hfc_n = hfc_calculator(frame_spectra)
             hfc.append(hfc_n)
         
         self.feature_processing(np.asarray(hfc).reshape(1, -1), 'hfc', fo=False)

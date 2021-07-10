@@ -11,8 +11,6 @@ def main(action, dataset_mode='train'):
     click.echo(action)
     if action == 1:
         print("Feature computation")
-        with open('config.json') as config_file:
-            config = json.load(config_file)
         subprocess.check_call(["python3.8", "src/features/audio_processing.py", dataset_mode])
     elif action == 2:
         print("Model tuning")

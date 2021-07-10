@@ -6,21 +6,27 @@ from feature_computation import Feature
 import json
 import librosa
 from collections import defaultdict
-import eyed3
+import sys
+
+dataset_mode = sys.argv[1]
+print("DM: {}".format(dataset_mode))
 
 # ***************** PATH CONFIGURATION ***************** 
 # Configuration file
 with open('config.json') as config_file:
     config = json.load(config_file)
+print(config['dataset_mode'])
 
 # Import data
-if config['dataset_mode'] == 'train':
+if dataset_mode == 'train':
     csv_file, root_data, csv_features = config['csv_train_data'], config['root_train_data'], config['train_features']
-elif config['dataset_mode'] == 'test':
+elif dataset_mode == 'test':
     csv_file, root_data, csv_features = config['csv_test_data'], config['root_test_data'], config['test_features']
+    config['middle'] = True
+else:
+    raise Exception("Input '{}' is not valid, the argument 'dataset_mode' can take only two values: 1) 'train' or 2) 'test'.".format(dataset_mode))
 
 song_id_list = pd.read_csv(csv_file, index_col='song_id').index.values.tolist() # Getting list of filename songs
-
 
 # Update features equal to true allows udpating a csv of feature values already computed previously, otherwise an empty dictionary is initialized
 if config['update_features']:
@@ -41,6 +47,7 @@ for i, filename in enumerate(sorted(song_id_list)):
     else:
         fullpath = os.path.join(root_data, str(filename) + '.mp3')
     waveform, _ = librosa.load(fullpath, mono=True, sr=sr)
+    
     # Take 45s middle of the song in the case of the test songs
     if config['middle']:
         duration_secs = 45
@@ -49,16 +56,13 @@ for i, filename in enumerate(sorted(song_id_list)):
     print ("Processing audio file: {0}".format(filename))
 
     # create feature object
-    if config['tag']:
-        af = eyed3.load(fullpath)
-        filename = af.tag.title
     feature = Feature(filename, waveform, win_length, hop_length, sr, features)
 
     # compute features and store them in the dataframe
     for feature_name, args in config['feature_list'].items():
         feature.call_function(feature_name, **args)
 
-# Convert datframe to dictionary. Saving the features to a dictionary and then converting to a dataframe is faster than working on dataframe directly
+# Convert datframe to dictionary
 df_features = pd.DataFrame.from_dict(feature.features)
 df_features.index.rename('song_id', inplace=True)
 df_features.to_csv(csv_features)

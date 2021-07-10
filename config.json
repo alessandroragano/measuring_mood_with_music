@@ -12,7 +12,7 @@
 
     "train_features": "./data/processed/train_features.csv",
     "test_features": "./data/processed/test_features.csv",
-    "output": "./data/annotations/chart_songs-svr_predictions.pkl",
+    "output": "./hm_replication/data/chart_songs-svr_predictions.pkl",
     "root_model": "./data/model/model.npy",
     "csv_feature_selection": "./data/processed/selected_features.csv",
     "csv_best_params": "./data/processed/best_params.csv",
@@ -36,10 +36,8 @@
         "hfc": {}
     },
     
-    "predict": false,
     "update_features": false,
-    "middle": true,
+    "middle": false,
     "benchmark": false,
-    "store": false,
-    "tag": false
+    "store": false
 }

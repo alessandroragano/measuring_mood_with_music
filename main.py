@@ -1,6 +1,7 @@
 import click
 import subprocess
 import json
+import os
 
 @click.command()
 @click.option('--action', default=1, required=True, help="Choose which script you want to run. 1) Feature computation, 2) Hyperparameter tuning" + 
@@ -12,8 +13,7 @@ def main(action, dataset_mode='train'):
         print("Feature computation")
         with open('config.json') as config_file:
             config = json.load(config_file)
-        config['dataset_mode'] = dataset_mode
-        subprocess.check_call(["python3.8", "src/features/audio_processing.py"])
+        subprocess.check_call(["python3.8", "src/features/audio_processing.py", dataset_mode])
     elif action == 2:
         print("Model tuning")
         subprocess.check_call(["python3.8", "src/model/model_tuning.py"])

@@ -41,7 +41,7 @@ To compute the training set fetures, you can follow these steps:
 2. Download the dataset https://cvml.unige.ch/databases/emoMusic/ and move the audio files to ``` data/raw/train ```.
 3. Run this command
 ```
-python main.py --action=1
+python main.py --action=1 --dataset_mode="train"
 ```
 ### Test set features
 The test set features that we have provided in the repo cannot be recomputed since the audio files are protected by copyright. However, you could use your test set. 
@@ -51,6 +51,16 @@ To compute features of your test set, follow these steps:
 3. Create the csv file ```data/annotations/test_annotations.csv``` with a column named ```song_id ``` that includes the filenames that you have in your folder. 
 4. Run this command
 ```
-python main.py --action=1
+python main.py --action=1 --dataset_mode="test"
 ```
 
+#### Essentia features
+Some features are computed using the open source library Essentia https://essentia.upf.edu. This library is not compatible with virtual environment. 
+You can install Essentia outside the virtual environment and copy its content to the virtual environment:
+1. Install Essentia https://essentia.upf.edu/installing.html
+2. Copy the library content to your virtual environment as follows:
+   ```
+   cp -r /usr/local/lib/python3.8/site-packages/essentia <path_to_your_env>/lib/python3.8/site-packages/essentia
+   ```
+   where <path_to_your_env> is where your virtual environment is located.
+   N.B: all the actions except ``` 1 ``` will run even without Essentia. Therefore, you could skip this step if you don't need to compute the audio features.

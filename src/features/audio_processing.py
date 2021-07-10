@@ -14,12 +14,13 @@ with open('config.json') as config_file:
     config = json.load(config_file)
 
 # Import data
-csv_file = config['csv_test_data']
-song_id_list = pd.read_csv(csv_file, index_col='song_id').index.values.tolist() # Getting list of filename songs
-root_data = config['root_test_data']
+if config['dataset_mode'] == 'train':
+    csv_file, root_data, csv_features = config['csv_train_data'], config['root_train_data'], config['train_features']
+elif config['dataset_mode'] == 'test':
+    csv_file, root_data, csv_features = config['csv_test_data'], config['root_test_data'], config['test_features']
 
-# Feature files
-csv_features = config['test_features']
+song_id_list = pd.read_csv(csv_file, index_col='song_id').index.values.tolist() # Getting list of filename songs
+
 
 # Update features equal to true allows udpating a csv of feature values already computed previously, otherwise an empty dictionary is initialized
 if config['update_features']:

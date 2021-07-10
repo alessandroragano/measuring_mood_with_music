@@ -4,6 +4,7 @@
     "csv_test_data": "./data/annotations/test_annotations.csv",
     "root_test_data": "./data/raw/test",
     "songs_info": "./data/annotations/songs_info.csv",
+    "dataset_mode": "train", 
 
     "sampling_rate": 44100,
     "win_length": 2048,

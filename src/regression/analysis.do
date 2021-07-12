@@ -7,9 +7,12 @@ grstyle set plain, horizontal grid
 
 set sformat %8.3f
 
-cd "/Users/alessandroragano/Documents/GitHub/measuring_life_satisfaction_with_music/src/regression"
+// cd to your current directory if you run the script from STATA (note that this is automatically handled by regression_analysis.py when running analysis.do from main.py)
+//cd <path/to/analysis.do> 
 
-use "/Users/alessandroragano/Documents/GitHub/measuring_life_satisfaction_with_music/data/model/reg_data.dta"
+cd "../../data/model"
+use "reg_data.dta"
+
 destring year, replace
 
 rename val_score valence

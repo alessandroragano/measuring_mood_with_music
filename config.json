@@ -19,7 +19,8 @@
     "model_path": "./model/model.pkl",
     "scaler_path": "./model/scaler.pkl",
 
-    "do_file": "./src/regression/analysis.do",
+    "do_file": "analysis.do",
+    "do_path": "./src/regression",
     "stata_installation_path": "/Applications/Stata/StataSE.app/Contents/MacOS/StataSE",
     "happiness_data": "./data/model/data_happiness_history_all2.dta",
     "reg_data": "./data/model/reg_data.dta'",

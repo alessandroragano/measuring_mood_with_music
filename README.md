@@ -31,10 +31,9 @@ python main.py --action=<n>
 where n is the action that you want to execute. The default action is ``` 6 ``` (regression analysis) which runs the STATA software and produces the correlation plot
 between life satisfaction and the music valence index (MVI).
 Even though any action depends on the previous ones, we have provided the results already calculated so that you can run any action independently of each other.
-To run all the steps, you should follow the order above. N.B.: the action ``` 1 ``` cannot be directly executed since the audio files are missing in the repo (see below).
+To run all the steps, you should follow the order above. N.B.: the action ``` 1 ``` cannot be directly executed since the audio files of the prediction set are missing due to copyright (see below).
 
 ## Feature computation
-Features cannot be directly computed since the audio files are missing.
 ### Training set features
 To compute the training set fetures, you can follow these steps:
 1. Create the folder ```data/raw/train```.
@@ -44,14 +43,14 @@ To compute the training set fetures, you can follow these steps:
 python main.py --action=1 --dataset_mode="train"
 ```
 ### Prediction set features
-The prediction set features that we have provided in the repo cannot be recomputed since the audio files are protected by copyright. However, you could use your prediction set. 
-To compute features of your prediction set, follow these steps: 
-1. Create the folder ```data/raw/test```.
-2. Move the audio files to ```data/raw/test```.
-3. Create the csv file ```data/annotations/test_annotations.csv``` with a column named ```song_id ``` that includes the filenames that you have in your folder. 
+The prediction set features that we have provided in the repo cannot be recomputed since the audio files are protected by copyright. However, you could use your own prediction set (e.g. chart music for any country). 
+To compute features of your own prediction set, follow these steps: 
+1. Create the folder ```data/raw/prediction```.
+2. Move the audio files to ```data/raw/prediction```.
+3. Create the csv file ```data/annotations/prediction_annotations.csv``` with a column named ```song_id ``` that includes the filenames that you have in your folder. 
 4. Run this command
 ```
-python main.py --action=1 --dataset_mode="test"
+python main.py --action=1 --dataset_mode="prediction"
 ```
 
 #### Essentia features

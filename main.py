@@ -23,7 +23,7 @@ def main(action, dataset_mode='train'):
         subprocess.check_call(["python3.8", "src/model/model_predictions.py"])
     elif action == 5:
         print("Prepare regression data")
-        subprocess.check_call(["python3.8", "hm_replication/form_stata_dta.py"])
+        subprocess.check_call(["python3.8", "src/regression/form_stata_dta.py"])
     elif action == 6:
         print("Regression analysis")
         subprocess.check_call(["python3.8", "src/model/regression_analysis.py"])

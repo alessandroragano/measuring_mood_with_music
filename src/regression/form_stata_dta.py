@@ -1,10 +1,12 @@
 import pandas as pd
 import numpy as np
+import json
 
+with open('config.json') as config_file:
+    config = json.load(config_file)
 
 # Read in chart songs with SVR predictions and create time series measures for regression analyses 
-
-df = pd.read_pickle('./hm_replication/data/chart_songs-svr_predictions.pkl')
+df = pd.read_pickle(config['output'])
 reg_data = pd.DataFrame(columns=['country','year'])
 years = list(range(1973,2020))
 for year in years:
@@ -92,16 +94,13 @@ for year in years:
 
 
 # Read in macro time series data from Hills et al. (2019) and merge with music time series measures
-macro_df = pd.read_stata('./hm_replication/data/data_happiness_history_all2.dta')
+macro_df = pd.read_stata(config['happiness_data'])
 macro_df = macro_df[(macro_df.isocntry=='GB-GBN') & (macro_df.year>=1973)]
 macro_df.isocntry = macro_df.isocntry.replace('GB-GBN','uk')
 macro_df = macro_df.rename(columns={'isocntry':'country'})
 reg_data = pd.merge(reg_data,macro_df, on=['country','year'], how='outer')
-reg_data.to_csv('./hm_replication/data/reg_data.csv')
 
 # Create stata dta
 obj_type_cols = list(reg_data.select_dtypes(include=['object']).columns)
 reg_data[obj_type_cols] = reg_data[obj_type_cols].astype(str)
-reg_data.to_stata(f'data/reg_data.dta', write_index=False, version=117)
-
-
+reg_data.to_stata(f'./data/model/reg_data.dta', write_index=False, version=117)

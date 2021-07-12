@@ -7,10 +7,9 @@ grstyle set plain, horizontal grid
 
 set sformat %8.3f
 
-*cd "C:\Users\Anthony\Documents\Projects\hm_replication\data"
-cd "/Users/alessandroragano/Documents/GitHub/measuring_life_satisfaction_with_music/hm_replication/data"
+cd "/Users/alessandroragano/Documents/GitHub/measuring_life_satisfaction_with_music/src/regression"
 
-use "reg_data.dta"
+use "/Users/alessandroragano/Documents/GitHub/measuring_life_satisfaction_with_music/data/model/reg_data.dta"
 destring year, replace
 
 rename val_score valence

@@ -12,15 +12,17 @@
 
     "train_features": "./data/processed/train_features.csv",
     "test_features": "./data/processed/test_features.csv",
-    "output": "./hm_replication/data/chart_songs-svr_predictions.pkl",
+    "output": "./data/model/chart_songs-svr_predictions.pkl",
     "root_model": "./data/model/model.npy",
     "csv_feature_selection": "./data/processed/selected_features.csv",
     "csv_best_params": "./data/processed/best_params.csv",
     "model_path": "./model/model.pkl",
     "scaler_path": "./model/scaler.pkl",
 
-    "do_file": "./hm_replication/analysis.do",
+    "do_file": "./src/regression/analysis.do",
     "stata_installation_path": "/Applications/Stata/StataSE.app/Contents/MacOS/StataSE",
+    "happiness_data": "./data/model/data_happiness_history_all2.dta",
+    "reg_data": "./data/model/reg_data.dta'",
 
     "feature_list": {
         "bpm": {},

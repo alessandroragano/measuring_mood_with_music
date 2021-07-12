@@ -17,10 +17,10 @@ The default location in Mac OS usually is ```/Applications/Stata/StataSE.app/Con
 
 ## Usage
 You can choose which action you want to execute: 
-1. Compute audio features (training set and test set)
+1. Compute audio features (training set and prediction set)
 2. Model tuning (find the best model hyperparameters)
 3. Model training (train support vector regression)
-4. Valence prediction (predict valence scores on the test set)
+4. Valence prediction (predict valence scores on the prediction set)
 5. Prepare data for regression
 6. Run regression analysis (STATA)
 
@@ -43,9 +43,9 @@ To compute the training set fetures, you can follow these steps:
 ```
 python main.py --action=1 --dataset_mode="train"
 ```
-### Test set features
-The test set features that we have provided in the repo cannot be recomputed since the audio files are protected by copyright. However, you could use your test set. 
-To compute features of your test set, follow these steps: 
+### Prediction set features
+The prediction set features that we have provided in the repo cannot be recomputed since the audio files are protected by copyright. However, you could use your prediction set. 
+To compute features of your prediction set, follow these steps: 
 1. Create the folder ```data/raw/test```.
 2. Move the audio files to ```data/raw/test```.
 3. Create the csv file ```data/annotations/test_annotations.csv``` with a column named ```song_id ``` that includes the filenames that you have in your folder. 

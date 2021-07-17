@@ -1,6 +1,5 @@
 import numpy as np
 import librosa
-import essentia
 import essentia.standard as es
 
 class Feature():
@@ -105,32 +104,45 @@ class Feature():
 
     def flux(self):
         print("Computing spectral flux")
-        w = es.Windowing(type = 'hann')
-        spectrum_calculator = es.Spectrum()
-        flux_calculator = es.Flux()
-        spectral_flux = []
+        glob = True
+        if glob:
+            flux_calculator = es.Flux()
+            spectral_flux = flux_calculator(self.signal)
+            self.save_feature([spectral_flux], 'flux')
+        else:
+            w = es.Windowing(type = 'hann')
+            spectrum_calculator = es.Spectrum()
 
-        for frame in es.FrameGenerator(self.signal, frameSize=self.win_length, hopSize=self.hop_length):
-            frame_spectra = spectrum_calculator(w(frame))
-            flux_n = flux_calculator(frame_spectra)
-            spectral_flux.append(flux_n)
-        
-        self.feature_processing(np.asarray(spectral_flux).reshape(1, -1), 'spflux', fo=False)
+            flux_calculator = es.Flux()
+
+            spectral_flux = []
+
+            for frame in es.FrameGenerator(self.signal, frameSize=self.win_length, hopSize=self.hop_length):
+                frame_spectra = spectrum_calculator(w(frame))
+                flux_n = flux_calculator(frame_spectra)
+                spectral_flux.append(flux_n)
+            
+            self.feature_processing(np.asarray(spectral_flux).reshape(1, -1), 'spflux', fo=False)
 
     def hfc(self):
         print("Computing High Frequency Content")
-
-        # Compute spectrum
-        w = es.Windowing(type = 'hann')
-        spectrum_calculator = es.Spectrum()
-        hfc_calculator = es.HFC()
-        hfc = []
-        for frame in es.FrameGenerator(self.signal, frameSize=self.win_length, hopSize=self.hop_length):
-            frame_spectra = spectrum_calculator(w(frame))
-            hfc_n = hfc_calculator(frame_spectra)
-            hfc.append(hfc_n)
-        
-        self.feature_processing(np.asarray(hfc).reshape(1, -1), 'hfc', fo=False)
+        glob = True
+        if glob:
+            hfc_calculator = es.HFC()
+            hfc = hfc_calculator(self.signal)
+            self.save_feature([hfc], 'hfc')   
+        else:
+            # Compute spectrum
+            w = es.Windowing(type = 'hann')
+            spectrum_calculator = es.Spectrum()
+            hfc_calculator = es.HFC()
+            hfc = []
+            for frame in es.FrameGenerator(self.signal, frameSize=self.win_length, hopSize=self.hop_length):
+                frame_spectra = spectrum_calculator(w(frame))
+                hfc_n = hfc_calculator(frame_spectra)
+                hfc.append(hfc_n)
+            
+            self.feature_processing(np.asarray(hfc).reshape(1, -1), 'hfc', fo=False)
 
     def call_function(self, func_name, **args):
         return getattr(self, self.methods[func_name])(**args)

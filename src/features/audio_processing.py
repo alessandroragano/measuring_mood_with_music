@@ -1,7 +1,6 @@
 import os
 from numpy.core.numeric import full
 import pandas as pd
-import numpy as np
 from feature_computation import Feature
 import json
 import librosa
@@ -19,11 +18,11 @@ with open('config.json') as config_file:
 # Import data
 if dataset_mode == 'train':
     csv_file, root_data, csv_features = config['csv_train_data'], config['root_train_data'], config['train_features']
-elif dataset_mode == 'test':
-    csv_file, root_data, csv_features = config['csv_test_data'], config['root_test_data'], config['test_features']
+elif dataset_mode == 'prediction':
+    csv_file, root_data, csv_features = config['csv_prediction_data'], config['root_prediction_data'], config['prediction_features']
     config['middle'] = True
 else:
-    raise Exception("Input '{}' is not valid, the argument 'dataset_mode' can take only two values: 1) 'train' or 2) 'test'.".format(dataset_mode))
+    raise Exception("Input '{}' is not valid, the argument 'dataset_mode' can take only two values: 1) 'train' or 2) 'prediction'.".format(dataset_mode))
 
 song_id_list = pd.read_csv(csv_file, index_col='song_id').index.values.tolist() # Getting list of filename songs
 
@@ -47,7 +46,7 @@ for i, filename in enumerate(sorted(song_id_list)):
         fullpath = os.path.join(root_data, str(filename) + '.mp3')
     waveform, _ = librosa.load(fullpath, mono=True, sr=sr)
     
-    # Take 45s middle of the song for testing
+    # Take 45s middle of the song for predictions
     if config['middle']:
         duration_secs = 45
         middle = waveform.shape[0]//2

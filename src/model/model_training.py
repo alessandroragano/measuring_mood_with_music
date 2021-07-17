@@ -1,7 +1,6 @@
 import pandas as pd
 from sklearn.svm import SVR
 from sklearn.preprocessing import StandardScaler
-import numpy as np
 import json
 import pickle
 
@@ -36,7 +35,7 @@ csv_best_params = config['csv_best_params']
 best_params = pd.read_csv(csv_best_params)
 
 # Create model
-model = SVR(kernel='rbf', C=best_params['svr__C'].values[0], epsilon=best_params['svr__epsilon'].values[0], gamma=best_params['svr__gamma'].values[0])
+model = SVR(kernel='rbf', C=best_params['svr__C'].values[0], epsilon=best_params['svr__epsilon'].values[0], gamma=best_params['svr__gamma'].values[0], coef0=0.1)
 
 # Training
 model.fit(X_train, y_train)

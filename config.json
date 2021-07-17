@@ -1,8 +1,8 @@
 {
     "csv_train_data": "./data/annotations/train_annotations.csv",
     "root_train_data": "./data/raw/train",
-    "csv_test_data": "./data/annotations/test_annotations.csv",
-    "root_test_data": "./data/raw/test",
+    "csv_prediction_data": "./data/annotations/prediction_annotations.csv",
+    "root_prediction_data": "./data/raw/prediction",
     "songs_info": "./data/annotations/songs_info.csv",
     "dataset_mode": "train", 
 
@@ -11,8 +11,8 @@
     "hop_length": 512,
 
     "train_features": "./data/processed/train_features.csv",
-    "test_features": "./data/processed/test_features.csv",
-    "output": "./data/model/chart_songs-svr_predictions.pkl",
+    "prediction_features": "./data/processed/prediction_features.csv",
+    "output": "./data/annotations/chart_songs-svr_predictions.pkl",
     "root_model": "./data/model/model.npy",
     "csv_feature_selection": "./data/processed/selected_features.csv",
     "csv_best_params": "./data/processed/best_params.csv",
@@ -37,10 +37,10 @@
         "chroma": {"nchroma": 12},
         "flux": {},
         "hfc": {}
-    },
+    },      
     
     "update_features": false,
     "middle": false,
     "benchmark": false,
-    "store": false
+    "store": true
 }

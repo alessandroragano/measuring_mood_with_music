@@ -5,13 +5,8 @@ import json
 import pandas as pd
 from sklearn.svm import SVR
 from sklearn.preprocessing import StandardScaler
-from sklearn.model_selection import train_test_split
-import numpy as np
-from sklearn.model_selection import KFold
 
 # Model tuning consists of finding the best hyperparameters and the best features
-# N.B: never use the test data in this process to avoid any data leakage
-# We use the entire EMO dataset since it represents the training set
 
 # Configuration file
 with open('config.json') as config_file:
@@ -42,18 +37,18 @@ valence = df_train['mean_valence'].to_numpy()
 
 # Create pipeline
 pipe = Pipeline([
-    ('feature_selection', SelectKBest(f_regression, k=100)),
     ('scale', StandardScaler()), 
+    ('feature_selection', SelectKBest(f_regression, k=100)),
     ('svr', SVR(kernel="rbf"))
 ])
 
 # Create grid search with cross-validation
 param_grid = {
-            'svr__C': [0.1, 1, 5, 10, 100],
-            'svr__epsilon': [0.0001, 0.0005, 0.001, 0.005, 0.01, 0.05, 0.1, 0.3, 0.5, 0.7, 1, 5, 10],
+            'svr__C': [0.1, 1, 100, 1000],
+            'svr__epsilon': [0.0001, 0.0005, 0.001, 0.005, 0.01, 0.05, 0.1, 0.5, 1, 5, 10],
             'svr__gamma': [0.0001, 0.001, 0.005, 0.1, 1, 3, 5]
             }   
-grid = GridSearchCV(pipe, param_grid, cv=5, scoring='r2')
+grid = GridSearchCV(pipe, param_grid, cv=5)
 
 # Training
 grid.fit(X, valence) 

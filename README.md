@@ -20,9 +20,10 @@ You can choose which action you want to execute:
 1. Compute audio features (training set and prediction set)
 2. Model tuning (find the best model hyperparameters)
 3. Model training (train support vector regression)
-4. Valence prediction (predict valence scores on the prediction set)
-5. Prepare data for regression
-6. Run regression analysis (STATA)
+4. Model testing
+5. Valence prediction (predict valence scores on the prediction set)
+6. Prepare data for regression
+7. Run regression analysis (STATA)
 
 To choose the action you need to run: 
 ```

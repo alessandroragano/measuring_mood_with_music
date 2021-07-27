@@ -8,7 +8,7 @@ with open('config.json') as config_file:
 # Read in chart songs with SVR predictions and create time series measures for regression analyses 
 df = pd.read_pickle(config['output'])
 reg_data = pd.DataFrame(columns=['country','year'])
-years = list(range(1973,2020))
+years = list(range(1973,2011))
 for year in years:
     
     print(f'Year: {year}')

@@ -1,0 +1,360 @@
+                                                       ___  ____  ____  ____  ____(R)
+                                                      /__    /   ____/   /   ____/   
+                                                     ___/   /   /___/   /   /___/    
+                                                       Statistics/Data analysis      
+      
+      
+     1 . 
+     2 . grstyle init
+      
+     3 . grstyle set plain, horizontal grid
+      
+     4 . 
+     5 . set sformat %8.3f
+      
+     6 . 
+     7 . // cd to your current directory if you run the script from STATA (note that this i
+      > s automatically handled by regression_analysis.py when running analysis_annual_cha
+      > nge.do from main.py)
+     8 . //cd <path/to/analysis2.do> 
+     9 . 
+    10 . cd "../../data/model"
+      /Users/alessandroragano/Documents/GitHub/measuring_life_satisfaction_with_music/data
+      > /model
+      
+    11 . use "reg_data.dta"
+      
+    12 . 
+    13 . destring year, replace
+      year: all characters numeric; replaced as int
+      
+    14 . 
+    15 . rename val_score valence
+      
+    16 . rename lifeexpectanc~l life_exp
+      
+    17 . rename educatiolineq~e  gini_edu
+      
+    18 . rename totalgrosscen~a  debt_gov
+      
+    19 . 
+    20 . *Invert the scale of Life satisfaction
+    21 . replace satislfe = 5-satislfe
+      (34 real changes made)
+      
+    22 . 
+    23 . *Logarithms
+    24 . g lgdp = log(rgdpch) // penn GDP
+      (2 missing values generated)
+      
+    25 . g lvalence_th_av = log(valence_th_av)
+      
+    26 . g llife_exp = log(life_exp)
+      (2 missing values generated)
+      
+    27 . 
+    28 . *Standardise
+    29 . egen zsatislfe = std(satislfe)
+      (4 missing values generated)
+      
+    30 . egen zvalence = std(valence)
+      (1 missing value generated)
+      
+    31 . egen zvalence_md_num1 = std(valence_md_num1)
+      
+    32 . 
+    33 . 
+    34 . // Time Series of LS, MVI and TVI //
+    35 . 
+    36 . label var year "Year"
+      
+    37 . 
+    38 . multiline satislfe valence_md_num1 valence year, mylabels(`" `" "LS " "' `" "MVI" 
+      > "' `" "TVI" "' "') xline(1980, lcolor(black) lpattern(dash)) xline(1989, lcolor(bl
+      > ack) lpattern(dash)) recast(connected) name("time_series", replace) 
+      
+    39 . 
+    40 . 
+    41 . // Correlation of LS and MVI //
+    42 . 
+    43 . *Correlation
+    44 . pwcorr satislfe valence_md_num1, sig
+      
+                   | satislfe v~d_num1
+      -------------+------------------
+          satislfe |   1.0000 
+                   |
+                   |
+      valence_md~1 |   0.3846   1.0000 
+                   |   0.0247
+                   |
+      
+    45 . 
+    46 . *Scatter
+    47 . graph twoway (scatter satislfe valence_md_num1, mcolor(blue)) (lfit satislfe valen
+      > ce_md_num1, lcolor(green)), ytitle("Life satisfaction") xtitle("MVI") legend(off) 
+      > name("scatter", replace)
+      
+    48 . 
+    49 . *Correlation (annual change in LS and annual change in MVI)
+    50 . tsset year
+      
+      Time variable: year, 1973 to 2010
+              Delta: 1 unit
+      
+    51 . g dsatislfe = satislfe - l.satislfe
+      (7 missing values generated)
+      
+    52 . g dvalence_md_num1 = valence_md_num1 - l.valence_md_num1
+      (1 missing value generated)
+      
+    53 . pwcorr dsatislfe dvalence_md_num1, sig
+      
+                   | dsatis~e dvalen~1
+      -------------+------------------
+         dsatislfe |   1.0000 
+                   |
+                   |
+      dvalence_m~1 |   0.4569   1.0000 
+                   |   0.0098
+                   |
+      
+    54 . 
+    55 . *Scatter (annual change in LS and annual change in MVI)
+    56 . graph twoway (scatter dsatislfe dvalence_md_num1, mcolor(blue)) (lfit dsatislfe dv
+      > alence_md_num1, lcolor(green)), ytitle("Annual change in Life satisfaction") xtitl
+      > e("Annual change in MVI") legend(off) name("scatter_diff", replace)
+      
+    57 . 
+    58 . *Regression 
+    59 . reg zsatislfe zvalence_md_num1 lgdp year, vce(robust)
+      
+      Linear regression                               Number of obs     =         34
+                                                      F(3, 30)          =      11.60
+                                                      Prob > F          =     0.0000
+                                                      R-squared         =     0.4648
+                                                      Root MSE          =      .7673
+      
+      ----------------------------------------------------------------------------------
+                       |               Robust
+             zsatislfe | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+      -----------------+----------------------------------------------------------------
+      zvalence_md_num1 |   .4034266   .1256002    3.212   0.003     .1469168    .6599364
+                  lgdp |   6.632146   3.833677    1.730   0.094    -1.197267    14.46156
+                  year |  -.1286908   .1012125   -1.271   0.213    -.3353944    .0780127
+                 _cons |   189.6045   163.3093    1.161   0.255    -143.9176    523.1267
+      ----------------------------------------------------------------------------------
+      
+    60 . reg zsatislfe zvalence_md_num1 lgdp llife_exp gini_edu inflation debt_gov year, vc
+      > e(robust)
+      
+      Linear regression                               Number of obs     =         34
+                                                      F(7, 26)          =       5.06
+                                                      Prob > F          =     0.0010
+                                                      R-squared         =     0.4848
+                                                      Root MSE          =     .80863
+      
+      ----------------------------------------------------------------------------------
+                       |               Robust
+             zsatislfe | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+      -----------------+----------------------------------------------------------------
+      zvalence_md_num1 |   .3999376   .1391725    2.874   0.008     .1138644    .6860107
+                  lgdp |   6.831853   4.702085    1.453   0.158     -2.83342    16.49713
+             llife_exp |   58.93158   80.96154    0.728   0.473    -107.4873    225.3504
+              gini_edu |   .0976417   .2909258    0.336   0.740    -.5003648    .6956482
+             inflation |  -.0223196   .0404155   -0.552   0.585    -.1053948    .0607557
+              debt_gov |   .0140989   .0327377    0.431   0.670    -.0531945    .0813923
+                  year |  -.2838475   .3023932   -0.939   0.357    -.9054255    .3377305
+                 _cons |   239.7338   320.1887    0.749   0.461    -418.4235    897.8912
+      ----------------------------------------------------------------------------------
+      
+    61 . 
+    62 . 
+    63 . // Comparing MVI and TVI //
+    64 . 
+    65 . reg zsatislfe zvalence_md_num1 zvalence lgdp year, vce(robust)
+      
+      Linear regression                               Number of obs     =         34
+                                                      F(4, 29)          =       8.27
+                                                      Prob > F          =     0.0001
+                                                      R-squared         =     0.4669
+                                                      Root MSE          =     .77886
+      
+      ----------------------------------------------------------------------------------
+                       |               Robust
+             zsatislfe | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+      -----------------+----------------------------------------------------------------
+      zvalence_md_num1 |   .4058478   .1287207    3.153   0.004     .1425843    .6691112
+              zvalence |  -.1010559   .2371272   -0.426   0.673    -.5860356    .3839237
+                  lgdp |   6.664977    3.86651    1.724   0.095    -1.242923    14.57288
+                  year |  -.1214865   .1093799   -1.111   0.276    -.3451936    .1022206
+                 _cons |   174.9259   179.8468    0.973   0.339     -192.902    542.7538
+      ----------------------------------------------------------------------------------
+      
+    66 . reg zsatislfe zvalence_md_num1 zvalence lgdp llife_exp gini_edu inflation debt_gov
+      >  year, vce(robust)
+      
+      Linear regression                               Number of obs     =         34
+                                                      F(8, 25)          =       3.87
+                                                      Prob > F          =     0.0044
+                                                      R-squared         =     0.4954
+                                                      Root MSE          =     .81613
+      
+      ----------------------------------------------------------------------------------
+                       |               Robust
+             zsatislfe | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+      -----------------+----------------------------------------------------------------
+      zvalence_md_num1 |   .4173938   .1432741    2.913   0.007     .1223154    .7124723
+              zvalence |  -.2766277   .3468171   -0.798   0.433    -.9909108    .4376555
+                  lgdp |   6.656985   4.644582    1.433   0.164    -2.908711    16.22268
+             llife_exp |   61.09942   81.72462    0.748   0.462    -107.2156    229.4144
+              gini_edu |   .1972765   .3288581    0.600   0.554    -.4800194    .8745724
+             inflation |   -.020922   .0399132   -0.524   0.605    -.1031247    .0612807
+              debt_gov |   .0200332   .0351616    0.570   0.574    -.0523834    .0924497
+                  year |   -.235272    .286243   -0.822   0.419    -.8248005    .3542564
+                 _cons |    134.105   325.8655    0.412   0.684    -537.0276    805.2376
+      ----------------------------------------------------------------------------------
+      
+    67 . 
+    68 . 
+    69 . // Comparing MVI with less popular songs //
+    70 . 
+    71 . pwcorr satislfe valence_md_num1, sig
+      
+                   | satislfe v~d_num1
+      -------------+------------------
+          satislfe |   1.0000 
+                   |
+                   |
+      valence_md~1 |   0.3846   1.0000 
+                   |   0.0247
+                   |
+      
+    72 . pwcorr satislfe valence_md_num2, sig
+      
+                   | satislfe v~d_num2
+      -------------+------------------
+          satislfe |   1.0000 
+                   |
+                   |
+      valence_md~2 |   0.1281   1.0000 
+                   |   0.4704
+                   |
+      
+    73 . pwcorr satislfe valence_md_num3, sig
+      
+                   | satislfe v~d_num3
+      -------------+------------------
+          satislfe |   1.0000 
+                   |
+                   |
+      valence_md~3 |   0.3141   1.0000 
+                   |   0.0704
+                   |
+      
+    74 . pwcorr satislfe valence_md_num4, sig
+      
+                   | satislfe v~d_num4
+      -------------+------------------
+          satislfe |   1.0000 
+                   |
+                   |
+      valence_md~4 |   0.3439   1.0000 
+                   |   0.0540
+                   |
+      
+    75 . pwcorr satislfe valence_md_num5, sig
+      
+                   | satislfe v~d_num5
+      -------------+------------------
+          satislfe |   1.0000 
+                   |
+                   |
+      valence_md~5 |  -0.1606   1.0000 
+                   |   0.3642
+                   |
+      
+    76 . pwcorr satislfe valence_md_num6, sig
+      
+                   | satislfe v~d_num6
+      -------------+------------------
+          satislfe |   1.0000 
+                   |
+                   |
+      valence_md~6 |   0.0259   1.0000 
+                   |   0.8845
+                   |
+      
+    77 . pwcorr satislfe valence_md_num7, sig
+      
+                   | satislfe v~d_num7
+      -------------+------------------
+          satislfe |   1.0000 
+                   |
+                   |
+      valence_md~7 |   0.0169   1.0000 
+                   |   0.9244
+                   |
+      
+    78 . pwcorr satislfe valence_md_num8, sig
+      
+                   | satislfe v~d_num8
+      -------------+------------------
+          satislfe |   1.0000 
+                   |
+                   |
+      valence_md~8 |  -0.1572   1.0000 
+                   |   0.3745
+                   |
+      
+    79 . pwcorr satislfe valence_md_num9, sig
+      
+                   | satislfe v~d_num9
+      -------------+------------------
+          satislfe |   1.0000 
+                   |
+                   |
+      valence_md~9 |   0.2493   1.0000 
+                   |   0.1551
+                   |
+      
+    80 . pwcorr satislfe valence_md_num10, sig
+      
+                   | satislfe valenc..
+      -------------+------------------
+          satislfe |   1.0000 
+                   |
+                   |
+      valence_m~10 |   0.0171   1.0000 
+                   |   0.9235
+                   |
+      
+    81 . pwcorr satislfe valence_md_av, sig
+      
+                   | satislfe val~d_av
+      -------------+------------------
+          satislfe |   1.0000 
+                   |
+                   |
+      valence_md~v |   0.3117   1.0000 
+                   |   0.0727
+                   |
+      
+    82 . 
+      end of do-file
+      
+    83 . log using c:dissert.log
+      ------------------------------------------------------------------------------------------------------------------------------------------------------------------
+            name:  <unnamed>
+             log:  /Users/alessandroragano/Documents/GitHub/measuring_life_satisfaction_with_music/data/model/c:dissert.log
+        log type:  text
+       opened on:  27 Jul 2021, 08:46:09
+      
+    84 . log close
+            name:  <unnamed>
+             log:  /Users/alessandroragano/Documents/GitHub/measuring_life_satisfaction_with_music/data/model/c:dissert.log
+        log type:  text
+       closed on:  27 Jul 2021, 08:46:19
+      ------------------------------------------------------------------------------------------------------------------------------------------------------------------
+      
+    85 . translate @Results mylog.txt

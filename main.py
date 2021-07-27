@@ -25,7 +25,6 @@ def main(action, dataset_mode='train'):
     elif action == 6:
         print("Prepare regression data")
         subprocess.check_call(["python3.8", "src/regression/form_stata_dta.py"])
-    elif action == 7:
         print("Regression analysis")
         subprocess.check_call(["python3.8", "src/model/regression_analysis.py"])
     else:

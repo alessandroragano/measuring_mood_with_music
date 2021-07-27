@@ -28,8 +28,8 @@ To choose the action you need to run:
 ```
 python main.py --action=<n>
 ```
-where n is the action that you want to execute. The default action is ``` 6 ``` (regression analysis) which runs the STATA software and produces the correlation plot
-between life satisfaction and the music valence index (MVI).
+where n is the action that you want to execute. The default action is ``` 6 ``` (regression analysis) which runs the STATA software and produces the regression and correlation results (statistics, tables and figures) for the paper, e.g. the scatter plot
+of life satisfaction and the music valence index (MVI).
 Even though any action depends on the previous ones, we have provided the results already calculated so that you can run any action independently of each other.
 To run all the steps, you should follow the order above. N.B.: the action ``` 1 ``` cannot be directly executed since the audio files of the prediction set are missing due to copyright (see below).
 

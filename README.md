@@ -22,8 +22,7 @@ You can choose which action you want to execute:
 3. Model training (train support vector regression)
 4. Model testing
 5. Valence prediction (predict valence scores on the prediction set)
-6. Prepare data for regression
-7. Run regression analysis (STATA)
+6. Run regression analysis (STATA)
 
 To choose the action you need to run: 
 ```

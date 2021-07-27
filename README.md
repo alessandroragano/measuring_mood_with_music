@@ -1,4 +1,13 @@
 # Measuring Mood with Music
+### Paper title
+Measuring Mood with Music: Using Machine Learning to Construct a Measure of Valence from Sound Data
+
+### Authors
+- Benetos Emmanouil (Queen Mary University of London)
+- Ragano Alessandro (University College Dublin)
+- Sgroi Daniel (University of Warwick)
+- Tuckwell Anthony (University of Warwick)
+
 ## Preparation
 To use the repository follow these steps first:
 
@@ -63,3 +72,6 @@ You can install Essentia outside the virtual environment and copy its content to
    ```
    where <path_to_your_env> is where your virtual environment is located.
    N.B: all the actions except ``` 1 ``` will run even without Essentia. Therefore, you could skip this step if you don't need to compute the audio features.
+
+####
+Copyright © 2021 Alessandro Ragano, Anthony Tuckwell

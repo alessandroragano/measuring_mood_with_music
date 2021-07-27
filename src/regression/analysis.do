@@ -82,3 +82,12 @@ pwcorr satislfe valence_md_num8, sig
 pwcorr satislfe valence_md_num9, sig
 pwcorr satislfe valence_md_num10, sig
 pwcorr satislfe valence_md_av, sig
+
+
+// Correlation of LS and MVI (lags) //
+
+*Correlation of MVI and LS(-1)
+pwcorr l.satislfe valence_md_num1, sig
+
+*Correlation of TVI and LS(-1)
+pwcorr l.satislfe valence, sig

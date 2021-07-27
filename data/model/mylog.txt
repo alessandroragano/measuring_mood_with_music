@@ -13,14 +13,12 @@
      5 . set sformat %8.3f
       
      6 . 
-     7 . // cd to your current directory if you run the script from STATA (note that this i
-      > s automatically handled by regression_analysis.py when running analysis_annual_cha
-      > nge.do from main.py)
+     7 . // cd to your current directory if you run the script from STATA (note that this is automatically handled by regression_analysis.py when running analysis_annual_c
+      > hange.do from main.py)
      8 . //cd <path/to/analysis2.do> 
      9 . 
     10 . cd "../../data/model"
-      /Users/alessandroragano/Documents/GitHub/measuring_life_satisfaction_with_music/data
-      > /model
+      /Users/alessandroragano/Documents/GitHub/measuring_life_satisfaction_with_music/data/model
       
     11 . use "reg_data.dta"
       
@@ -69,9 +67,8 @@
     36 . label var year "Year"
       
     37 . 
-    38 . multiline satislfe valence_md_num1 valence year, mylabels(`" `" "LS " "' `" "MVI" 
-      > "' `" "TVI" "' "') xline(1980, lcolor(black) lpattern(dash)) xline(1989, lcolor(bl
-      > ack) lpattern(dash)) recast(connected) name("time_series", replace) 
+    38 . multiline satislfe valence_md_num1 valence year, mylabels(`" `" "LS " "' `" "MVI" "' `" "TVI" "' "') xline(1980, lcolor(black) lpattern(dash)) xline(1989, lcolor(
+      > black) lpattern(dash)) recast(connected) name("time_series", replace) 
       
     39 . 
     40 . 
@@ -91,9 +88,8 @@
       
     45 . 
     46 . *Scatter
-    47 . graph twoway (scatter satislfe valence_md_num1, mcolor(blue)) (lfit satislfe valen
-      > ce_md_num1, lcolor(green)), ytitle("Life satisfaction") xtitle("MVI") legend(off) 
-      > name("scatter", replace)
+    47 . graph twoway (scatter satislfe valence_md_num1, mcolor(blue)) (lfit satislfe valence_md_num1, lcolor(green)), ytitle("Life satisfaction") xtitle("MVI") legend(off
+      > ) name("scatter", replace)
       
     48 . 
     49 . *Correlation (annual change in LS and annual change in MVI)
@@ -121,9 +117,8 @@
       
     54 . 
     55 . *Scatter (annual change in LS and annual change in MVI)
-    56 . graph twoway (scatter dsatislfe dvalence_md_num1, mcolor(blue)) (lfit dsatislfe dv
-      > alence_md_num1, lcolor(green)), ytitle("Annual change in Life satisfaction") xtitl
-      > e("Annual change in MVI") legend(off) name("scatter_diff", replace)
+    56 . graph twoway (scatter dsatislfe dvalence_md_num1, mcolor(blue)) (lfit dsatislfe dvalence_md_num1, lcolor(green)), ytitle("Annual change in Life satisfaction") xti
+      > tle("Annual change in MVI") legend(off) name("scatter_diff", replace)
       
     57 . 
     58 . *Regression 
@@ -145,8 +140,7 @@
                  _cons |   189.6045   163.3093    1.161   0.255    -143.9176    523.1267
       ----------------------------------------------------------------------------------
       
-    60 . reg zsatislfe zvalence_md_num1 lgdp llife_exp gini_edu inflation debt_gov year, vc
-      > e(robust)
+    60 . reg zsatislfe zvalence_md_num1 lgdp llife_exp gini_edu inflation debt_gov year, vce(robust)
       
       Linear regression                               Number of obs     =         34
                                                       F(7, 26)          =       5.06
@@ -191,8 +185,7 @@
                  _cons |   174.9259   179.8468    0.973   0.339     -192.902    542.7538
       ----------------------------------------------------------------------------------
       
-    66 . reg zsatislfe zvalence_md_num1 zvalence lgdp llife_exp gini_edu inflation debt_gov
-      >  year, vce(robust)
+    66 . reg zsatislfe zvalence_md_num1 zvalence lgdp llife_exp gini_edu inflation debt_gov year, vce(robust)
       
       Linear regression                               Number of obs     =         34
                                                       F(8, 25)          =       3.87
@@ -341,20 +334,39 @@
                    |
       
     82 . 
+    83 . 
+    84 . // Correlation of LS and MVI (lags) //
+    85 . 
+    86 . *Correlation of MVI and LS(-1)
+    87 . pwcorr l.satislfe valence_md_num1, sig
+      
+                   | L.sati~e v~d_num1
+      -------------+------------------
+        L.satislfe |   1.0000 
+                   |
+                   |
+      valence_md~1 |   0.1467   1.0000 
+                   |   0.4076
+                   |
+      
+    88 . 
+    89 . *Correlation of TVI and LS(-1)
+    90 . pwcorr l.satislfe valence, sig
+      
+                   | L.sati~e  valence
+      -------------+------------------
+        L.satislfe |   1.0000 
+                   |
+                   |
+           valence |   0.4668   1.0000 
+                   |   0.0054
+                   |
+      
+    91 . 
       end of do-file
       
-    83 . log using c:dissert.log
-      ------------------------------------------------------------------------------------------------------------------------------------------------------------------
-            name:  <unnamed>
-             log:  /Users/alessandroragano/Documents/GitHub/measuring_life_satisfaction_with_music/data/model/c:dissert.log
-        log type:  text
-       opened on:  27 Jul 2021, 08:46:09
+    92 . translate @Results mylog.txt
+      file mylog.txt already exists
+      r(602);
       
-    84 . log close
-            name:  <unnamed>
-             log:  /Users/alessandroragano/Documents/GitHub/measuring_life_satisfaction_with_music/data/model/c:dissert.log
-        log type:  text
-       closed on:  27 Jul 2021, 08:46:19
-      ------------------------------------------------------------------------------------------------------------------------------------------------------------------
-      
-    85 . translate @Results mylog.txt
+    93 . translate @Results mylog2.txt

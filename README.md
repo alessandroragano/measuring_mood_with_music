@@ -3,10 +3,10 @@
 Measuring Mood with Music: Using Machine Learning to Construct a Measure of Valence from Sound Data
 
 ### Authors
-- Benetos Emmanouil (Queen Mary University of London)
-- Ragano Alessandro (University College Dublin)
-- Sgroi Daniel (University of Warwick)
-- Tuckwell Anthony (University of Warwick)
+- Emmanouil Benetos (Queen Mary University of London)
+- Alessandro Ragano (University College Dublin)
+- Daniel Sgroi (University of Warwick)
+- Anthony Tuckwell (University of Warwick)
 
 ## Preparation
 To use the repository follow these steps first:

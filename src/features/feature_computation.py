@@ -86,8 +86,8 @@ class Feature():
     # Essentia features
     def bpm(self):
         print("Computing BPM")
-        rhythm_extractor = es.RhythmExtractor2013()
-        bpm, _, _, _, _ = rhythm_extractor(self.signal)
+        percival_bpm = es.PercivalBpmEstimator()
+        bpm = percival_bpm(self.signal)
         self.save_feature([bpm], 'bpm')
     
     def rms(self):
@@ -105,13 +105,13 @@ class Feature():
     def flux(self):
         print("Computing spectral flux")
         glob = True
+        spectrum_calculator = es.Spectrum()
         if glob:
             flux_calculator = es.Flux()
-            spectral_flux = flux_calculator(self.signal)
+            spectral_flux = flux_calculator(spectrum_calculator(self.signal))
             self.save_feature([spectral_flux], 'flux')
         else:
             w = es.Windowing(type = 'hann')
-            spectrum_calculator = es.Spectrum()
 
             flux_calculator = es.Flux()
 
